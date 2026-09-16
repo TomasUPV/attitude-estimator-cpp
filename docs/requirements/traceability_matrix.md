@@ -13,9 +13,9 @@ This matrix establishes end-to-end bidirectional traceability between High-Level
 
 | HLR ID | LLR ID | Module / Function | Verification Test | Status |
 |---|---|---|---|---|
-| **HLR-001** | LLR-QM-001 | `QuaternionMath::multiply` | `QuaternionMathTest.MultiplicationIdentity` | Verified |
-| | LLR-QM-002 | `QuaternionMath::normalize` | `QuaternionMathTest.NormalizationProducesUnitLength` | Verified |
-| | LLR-QM-003 | `QuaternionMath::norm` | `QuaternionMathTest.DefaultQuaternionHasUnitNorm` | Verified |
+| **HLR-001** | LLR-QM-001 | `QuaternionMath::multiply` | `QuaternionMathTest.MultiplicationIdentity` | Pending |
+| | LLR-QM-002 | `QuaternionMath::normalize` | `QuaternionMathTest.NormalizationProducesUnitLength` | Pending |
+| | LLR-QM-003 | `QuaternionMath::norm` | `QuaternionMathTest.DefaultQuaternionHasUnitNorm` | Pending |
 | | LLR-QM-004 | `QuaternionMath::toEulerAngles` | `QuaternionMathTest.EulerAngleConversionZeroRotation` | Pending |
 | | LLR-AE-005 | `AttitudeEstimator::getOrientationQuaternion` | `AttitudeEstimatorTest.ReturnsNormalizedOrientation` | Pending |
 | | LLR-AE-006 | `AttitudeEstimator::getEulerAngles` | `AttitudeEstimatorTest.ConvertsToEuler` | Pending |
@@ -33,7 +33,7 @@ This matrix establishes end-to-end bidirectional traceability between High-Level
 | | LLR-AE-004 | `AttitudeEstimator::processSample` | `AttitudeEstimatorTest.DispatchesUpdateStep` | Pending |
 | **HLR-005** | LLR-QM-005 | `QuaternionMath::derivative` | `QuaternionMathTest.DerivativeZeroAngularVelocity` | Pending |
 | | LLR-EKF-007 | `EKF_Core::normalizeState` | `EKFCoreTest.MaintainsUnitNormPostStep` | Pending |
-| **HLR-006** | LLR-EKF-009 | `EKF_Core` (Static Allocation) | Structural Code Review / Linter Checks | Verified |
+| **HLR-006** | LLR-EKF-009 | `EKF_Core` (Static Allocation) | Structural Code Review / Linter Checks | Pending |
 | **HLR-007** | LLR-AE-001 | `AttitudeEstimator::initialize` | `AttitudeEstimatorTest.DefaultInitialization` | Pending |
 | | LLR-AE-007 | `AttitudeEstimator::processSample` | `AttitudeEstimatorTest.DiscardsInvalidTimestamps` | Pending |
 | **HLR-008** | LLR-EKF-008 | `EKF_Core::getState` | `EKFCoreTest.ExposesImmutableState` | Pending |
