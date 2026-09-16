@@ -20,9 +20,9 @@ requirements-driven, traceable, verifiable embedded software practice.
   standard for aerospace attitude representation, unlike Euler angles
 
 ## Success metrics
-- Steady-state orientation error < X° (roll/pitch) under static conditions
-- Filter converges from a >30° initial orientation error within Y seconds
-- No divergence over a Z-minute simulated flight/motion profile
+- Steady-state orientation error < 1.5° (roll/pitch) under static conditions
+- Filter converges from a >30° initial orientation error within 3 seconds
+- No divergence over a 10 minute simulated flight/motion profile
 
 ## Test data
 - Synthetic IMU data generated from known ground-truth trajectories
@@ -34,3 +34,6 @@ requirements-driven, traceable, verifiable embedded software practice.
 - Magnetometer fusion (unless stretch goal is reached)
 - Real hardware deployment (this is phase 2, separate milestone)
 - Formal DO-178C certification artifacts (DER review, tool qualification)
+
+> Note: initial targets based on typical MEMS accelerometer/gyroscope noise characteristics (no magnetometer). To be validated empirically
+against simulated data once the filter is implemented; this section will be updated with measured results.
