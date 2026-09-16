@@ -1,0 +1,17 @@
+---
+Checks: >
+  -*,
+  bugprone-*,
+  cert-*,
+  cppcoreguidelines-*,
+  performance-*,
+  readability-redundant-*
+
+WarningsAsErrors: >
+  bugprone-*,
+  cert-dcl*,
+  cert-err*,
+  cppcoreguidelines-avoid-goto,
+  cppcoreguidelines-no-malloc
+
+HeaderFilterRegex: 'include/.*'

@@ -40,3 +40,7 @@ jobs:
             --inline-suppr \
             -I include \
             src/
+
+        - name: Static Analysis (clang-tidy MISRA/Safety profile)
+        run: |
+          clang-tidy -p build src/quaternion_math.cpp
