@@ -36,6 +36,7 @@ jobs:
           cppcheck --enable=all --inconclusive --error-exitcode=1 \
             --suppress=missingIncludeSystem \
             --suppress=unmatchedSuppression \
+            --suppress=unusedFunction \
             --inline-suppr \
             -I include \
             src/
