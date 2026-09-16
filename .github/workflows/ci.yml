@@ -1,0 +1,41 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake clang clang-tidy cppcheck
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -S . \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_COMPILER=clang++
+
+      - name: Build Core and Tests
+        run: cmake --build build --config Release --parallel
+
+      - name: Run Unit Tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Static Analysis (cppcheck)
+        run: |
+          cppcheck --enable=all --inconclusive --error-exitcode=1 \
+            --suppress=missingIncludeSystem \
+            --suppress=unmatchedSuppression \
+            --inline-suppr \
+            -I include \
+            src/
