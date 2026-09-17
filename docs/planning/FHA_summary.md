@@ -2,8 +2,8 @@
 
 **System Item:** Attitude & Heading Reference System (AHRS) — Attitude Estimator Software Function  
 **Governing Standard:** ARP4761 / ARP4754A / RTCA DO-178C Section 2  
-**Baseline Version:** 0.1 
-**Status:** In Work
+**Baseline Version:** 0.1 (Draft)  
+**Status:** In Work / Draft  
 
 ---
 
@@ -20,7 +20,7 @@ In accordance with **ARP4761 (Safety Assessment Process)** and **ARP4754A**, the
 
 ## 2. System Operational Context & Architecture Partitioning
 
-The software function under evaluation processes digitized tri-axial specific force ($\mathbf{a}$) and tri-axial angular rate ($\boldsymbol{\omega}$) from a 6-DOF Inertial Measurement Unit (IMU) to produce dynamic pitch and roll state estimates via an Extended Kalman Filter (EKF).
+The software function under evaluation processes digitized tri-axial specific force and tri-axial angular rate from a 6-DOF Inertial Measurement Unit (IMU) to produce dynamic pitch and roll state estimates via an Extended Kalman Filter (EKF).
 
 The host avionics environment dictates the operational criticality:
 * **Configuration A (Primary Flight Instrument / Autopilot Ingress):** The estimator directly feeds the Primary Flight Display (PFD) and flight control logic in Instrument Meteorological Conditions (IMC).
@@ -30,13 +30,11 @@ The host avionics environment dictates the operational criticality:
 
 ## 3. Failure Condition Classification Matrix (ARP4761)
 
-The table below delineates the functional failure modes, crew effects, severity classifications, and resulting software Design Assurance Level (DAL) allocations:
-
 | Failure ID | Failure Mode Description | Crew & Flight Phase Impact | Severity Classification (ARP4761) | Software DAL Allocation (DO-178C) |
 | :--- | :--- | :--- | :--- | :--- |
-| **FHA-AHRS-001** | **Undetected Erroneous Pitch/Roll Output (Hazardously Misleading Information - HMI)**<br>Filter outputs smooth, divergent, or frozen attitude data without triggering an integrity/invalidity flag during IMC flight. | Crew unaware of false spatial attitude; risk of spatial disorientation, uncommanded attitude deviation, or inappropriate flight control inputs. Significant reduction in safety margins. | **Hazardous / Severe-Major** *(Configuration A)*<br>*(Probability Target: $1 \times 10^{-7}$ / flt hr)* | **DAL B** |
-| **FHA-AHRS-002** | **Total Loss of Attitude Estimation Function (Loss of Function - LOF)**<br>Estimator enters an unrecoverable fault state, crashes, halts sample processing, or asserts an explicit invalidity flag. | Immediate degradation of automated flight control; crew must revert to secondary or standby attitude instrumentation. Workload increases significantly, but safe flight is maintained. | **Major** *(Configuration A)* / **Minor** *(Configuration B)*<br>*(Probability Target: $1 \times 10^{-5}$ / flt hr)* | **DAL C** |
-| **FHA-AHRS-003** | **Degraded Precision / Out-of-Tolerance Attitude Estimates**<br>Steady-state error exceeds $1.5^\circ$ or recovery time exceeds $3.0\text{ s}$ without divergence. | Degraded control smoothness and increased pilot workload during manual approach; no immediate hazard to airframe integrity. | **Minor**<br>*(Probability Target: $1 \times 10^{-3}$ / flt hr)* | **DAL D** |
+| **FHA-AHRS-001** | **Undetected Erroneous Pitch/Roll Output (Hazardously Misleading Information - HMI)**<br>Filter outputs smooth, divergent, or frozen attitude data without triggering an integrity/invalidity flag during IMC flight. | Crew unaware of false spatial attitude; risk of spatial disorientation, uncommanded attitude deviation, or inappropriate flight control inputs. Significant reduction in safety margins. | **Hazardous / Severe-Major** *(Configuration A)*<br>(Target: 1e-7 / flight hour) | **DAL B** |
+| **FHA-AHRS-002** | **Total Loss of Attitude Estimation Function (Loss of Function - LOF)**<br>Estimator enters an unrecoverable fault state, crashes, halts sample processing, or asserts an explicit invalidity flag. | Immediate degradation of automated flight control; crew must revert to secondary or standby attitude instrumentation. Workload increases significantly, but safe flight is maintained. | **Major** *(Configuration A)* / **Minor** *(Configuration B)*<br>(Target: 1e-5 / flight hour) | **DAL C** |
+| **FHA-AHRS-003** | **Degraded Precision / Out-of-Tolerance Attitude Estimates**<br>Steady-state error exceeds 1.5° or recovery time exceeds 3.0 s without divergence. | Degraded control smoothness and increased pilot workload during manual approach; no immediate hazard to airframe integrity. | **Minor**<br>(Target: 1e-3 / flight hour) | **DAL D** |
 
 ---
 
@@ -50,7 +48,7 @@ Based on the failure mode analysis:
 
 2. **Dual-Certification Scope (DAL B / DAL C Dual Strategy):**
    * For the purpose of this software lifecycle and subsequent Stage of Involvement (SOI) audits, the software processes, design standards, and verification activities are planned to satisfy **DAL B** objectives:
-     * Full bidirectional requirement traceability ($HLR \leftrightarrow LLR \leftrightarrow Code \leftrightarrow Test$).
+     * Full bidirectional requirement traceability (HLR <-> LLR <-> Code <-> Test).
      * **Decision Coverage (Branch Coverage)** structural analysis.
      * Software independence across verification and quality assurance processes.
    * If integrated strictly as a standby instrument (Configuration B), the baseline can be transitioned to **DAL C** without architectural modification, relying on Statement Coverage verification.
@@ -61,7 +59,7 @@ Based on the failure mode analysis:
 
 To mitigate the risk of HMI (**FHA-AHRS-001**), the following top-level safety constraints are allocated to the software development lifecycle:
 
-* **SR-SAF-001 (Monotonicity & Guardrails):** The software shall discard and flag samples with non-positive or excessive time deltas ($\Delta t \le 0$ or $\Delta t > 0.1\text{ s}$) to prevent numerical divergence of the kinematic integrator.
+* **SR-SAF-001 (Monotonicity & Guardrails):** The software shall discard and flag samples with non-positive or excessive time deltas (dt <= 0 or dt > 0.1 s) to prevent numerical divergence of the kinematic integrator.
 * **SR-SAF-002 (Unit Norm Preservation):** The state quaternion shall undergo deterministic Euclidean normalization after every prediction and update cycle to prevent arithmetic drift from physical reality.
 * **SR-SAF-003 (Deterministic Execution):** The software shall avoid dynamic heap allocation (`malloc`, `new`) during runtime execution, ensuring fixed execution time bounds (WCET predictability) and zero risk of heap exhaustion crashes.
 
