@@ -1,30 +1,45 @@
-# Attitude Estimator — DO-178C-Inspired Process
+# Attitude Estimator — Full DO-178C Lifecycle Simulation
 
-An Extended Kalman Filter (EKF) attitude estimator for 6-DOF IMU data (accelerometer + gyroscope), developed adhering to the safety-critical software lifecycle principles of **DO-178C** and a **MISRA-like** coding standard.
+[![Continuous Integration](https://github.com/TomasUPV/attitude-estimator-cpp/actions/workflows/ci.yml/badge.svg)](https://github.com/TomasUPV/attitude-estimator-cpp/actions/workflows/ci.yml)
+[![Standard: C++17](https://img.shields.io/badge/Language-C%2B%2B17-blue.svg)](https://en.cppreference.com/w/cpp/17)
+[![Compliance: MISRA--like](https://img.shields.io/badge/Compliance-MISRA--like%20%2F%20CERT-brightgreen.svg)]()
+[![Process: DO--178C](https://img.shields.io/badge/Process-DO--178C%20Simulated-orange.svg)]()
+
+This repository implements a 6-DOF IMU pitch and roll attitude estimator using an Extended Kalman Filter (EKF), simulating the complete verification and certification lifecycle mandated by **RTCA DO-178C** (Design Assurance Level B/C).
+
+> **Aviation Certification Framework:**  
+> This project demonstrates the step-by-step engineering processes required to achieve flight authorization, progressing sequentially through each Stage of Involvement (SOI) audit.
 
 ---
 
-## 1. Problem & Motivation
-Consumer and aerospace IMU systems require drift-free pitch and roll estimation under noisy dynamics. In safety-critical avionics, algorithmic accuracy is insufficient on its own: code must be deterministic, trace directly to verified requirements, avoid dynamic memory allocation at runtime, and maintain high test coverage.
+## 1. Problem & Performance Targets
 
-## 2. Architecture & Design Principles
-- **Hamilton Quaternion Kinematics**: Complete avoidance of gimbal lock; Euler angles computed solely for telemetry/inspection.
-- **DO-178C-Inspired Traceability**: Strict hierarchy linking Scope $\rightarrow$ High-Level Requirements (HLR) $\rightarrow$ Low-Level Requirements (LLR) $\rightarrow$ Verification Tests.
-- **Deterministic C++17**: No runtime dynamic memory allocations (`malloc`, `new`), strict MISRA-aligned static analysis via Clang-Tidy and Cppcheck.
-- **Modular Layering**:
-  - `QuaternionMath`: Pure mathematical operations on rotations.
-  - `SensorModel`: IMU data structures and synthetic noise generators.
-  - `EKF_Core`: Numerical integration, Jacobian calculation, and state/covariance updates.
-  - `AttitudeEstimator`: Consumer facade handling delta-time computation and input validation.
+Estimating orientation from low-cost MEMS sensors requires combining rate gyroscopes (subject to drift) with accelerometers (subject to vibration and dynamic acceleration).
 
-## 3. Toolchain & Verification Setup
-- **Build System**: CMake 3.16+ with `-Wall -Wextra -Wpedantic -Werror -Wconversion`.
-- **Unit Testing**: GoogleTest integrated via CMake `FetchContent`.
-- **Static Analysis**: Dual-layer linting with `cppcheck` and `clang-tidy` (enforcing CERT C++ and Core Guidelines).
-- **CI/CD**: Automated GitHub Actions workflow executing build, tests, and static checks on every push.
+* **Steady-State Error**: Less than 1.5 degrees in pitch and roll under nominal static conditions.
+* **Dynamic Recovery**: Convergence from an orientation error greater than 30 degrees within 3.0 seconds.
+* **Numerical Stability**: Zero filter divergence over a continuous 10-minute simulated trajectory.
 
-### Building & Running Tests Locally
-```bash
-cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-cmake --build build --parallel
-ctest --test-dir build --output-on-failure
+*(Initial targets derived from typical MEMS noise characteristics; validated empirically against synthetic ground-truth datasets).*
+
+---
+
+## 2. Current Lifecycle Stage: Phase 1 — Planning (SOI-1)
+
+Before developing requirements or code, DO-178C requires establishing and approving the lifecycle governance plans:
+
+* **Stage Target**: SOI-1 Review (Audit of software plans and standards).
+* **Baseline Artifacts**:
+  * [`docs/planning/PSAC.md`](docs/planning/PSAC.md): Plan for Software Aspects of Certification.
+  * [`docs/planning/SDP.md`](docs/planning/SDP.md): Software Development Plan.
+  * [`docs/planning/SVP.md`](docs/planning/SVP.md): Software Verification Plan.
+
+---
+
+## 3. Architecture Overview
+
+The software is structured into four deterministic modules:
+* **`QuaternionMath`**: Pure, stateless Hamilton quaternion operations with epsilon safeguards against zero division.
+* **`SensorModel`**: Sensor reading data structures and synthetic trajectory generation with Gaussian noise injection.
+* **`EKF_Core`**: State propagation, Jacobian evaluation, and Kalman measurement update.
+* **`AttitudeEstimator`**: System facade handling sample validity and timestamp monotonicity checks.
