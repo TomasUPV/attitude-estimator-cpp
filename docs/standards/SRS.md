@@ -73,13 +73,13 @@ Prior to baselining any requirement data item (`HLR.md` or modular LLRs in `docs
 
 | Item # | Verification Check Item | DO-178C Criteria Reference | Verification Method | Result (Pass / Fail / N/A) | Evidence / Remarks |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **CHK-SRS-01** | **Mandatory Modality:** Does every requirement state normative intent using `shall` syntax, excluding ambiguous verbs (`should`, `may`, `will`)? | Section 5.1.2.a | Visual Inspection | [ ] | |
-| **CHK-SRS-02** | **Absence of Ambiguity:** Is the statement free of qualitative/untestable terms (e.g., *fast*, *robust*, *optimized*, *TBD*)? | Section 5.1.2.b | Lexical Search / Peer Review | [ ] | |
-| **CHK-SRS-03** | **Verifiability & Quantifiable Tolerances:** Does the requirement establish numerical thresholds, timing bounds, SI units, and deterministic pass/fail limits? | Section 6.2.2.a | Review vs Scope Targets | [ ] | |
-| **CHK-SRS-04** | **Input/Output Domain Completeness:** Are nominal operating intervals, boundary/edge conditions, and invalid inputs explicitly addressed? | Section 5.1.2.b | Boundary Analysis Review | [ ] | |
-| **CHK-SRS-05** | **Implementation Independence (HLR only):** Does the HLR define functional intent without dictating programming language constructs, local variables, or CPU instructions? | Section 5.1.2.a | Architecture Decoupling Check | [ ] | |
-| **CHK-SRS-06** | **Traceability Integrity:** Is the requirement assigned an immutable identifier and registered bidirectionally in `docs/requirements/traceability_matrix.md`? | Section 5.5 / Table A-3 | Traceability Audit | [ ] | |
-| **CHK-SRS-07** | **Derived Safety Identification:** If the requirement is derived (no parent requirement), has it been formally flagged and reported to system safety engineering? | Section 5.2.2 | Safety Assessment Check | [ ] | |
+| **CHK-SRS-01** | **Mandatory Modality:** Does every requirement state normative intent using `shall` syntax, excluding ambiguous verbs (`should`, `may`, `will`)? | Section 5.1.2.a | Visual Inspection | | |
+| **CHK-SRS-02** | **Absence of Ambiguity:** Is the statement free of qualitative/untestable terms (e.g., *fast*, *robust*, *optimized*, *TBD*)? | Section 5.1.2.b | Lexical Search / Peer Review | | |
+| **CHK-SRS-03** | **Verifiability & Quantifiable Tolerances:** Does the requirement establish numerical thresholds, timing bounds, SI units, and deterministic pass/fail limits? | Section 6.2.2.a | Review vs Scope Targets | | |
+| **CHK-SRS-04** | **Input/Output Domain Completeness:** Are nominal operating intervals, boundary/edge conditions, and invalid inputs explicitly addressed? | Section 5.1.2.b | Boundary Analysis Review | | |
+| **CHK-SRS-05** | **Implementation Independence (HLR only):** Does the HLR define functional intent without dictating programming language constructs, local variables, or CPU instructions? | Section 5.1.2.a | Architecture Decoupling Check | | |
+| **CHK-SRS-06** | **Traceability Integrity:** Is the requirement assigned an immutable identifier and registered bidirectionally in `docs/requirements/traceability_matrix.md`? | Section 5.5 / Table A-3 | Traceability Audit | | |
+| **CHK-SRS-07** | **Derived Safety Identification:** If the requirement is derived (no parent requirement), has it been formally flagged and reported to system safety engineering? | Section 5.2.2 | Safety Assessment Check | | |
 
 ### Checklist Sign-off Record
 * **Review Target Artifact:** `docs/requirements/HLR.md` / `docs/design/*.md`

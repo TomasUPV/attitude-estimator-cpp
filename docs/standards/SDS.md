@@ -73,7 +73,7 @@ Every LLR authored in `docs/design/*.md` shall comply with the following structu
 
 * **Input Data Validation:** Public interfaces must validate sample timestamps for strictly positive monotonicity ($0 < dt \le 0.1\text{ s}$).
 * **Normalization Invariant:** Following any state prediction or measurement update, the attitude quaternion must undergo Euclidean normalization.
-* **Covariance Symmetry:** The error covariance matrix $P$ must enforce mathematical symmetry ($P = \frac{1}{2}(P + P^T)$) to prevent numerical divergence caused by finite-precision drift.
+* **Covariance Symmetry:** The error covariance matrix $P$ must enforce mathematical symmetry (`P = 0.5 * (P + P^T)`) to prevent numerical divergence caused by finite-precision drift.
 
 ---
 
