@@ -26,16 +26,68 @@ Estimating orientation from low-cost MEMS sensors requires combining rate gyrosc
 
 ## 2. Current Lifecycle Stage: Phase 1 — Planning (SOI-1)
 
-Before developing requirements or code, DO-178C requires establishing and approving the lifecycle governance plans:
+Before developing requirements or code, RTCA DO-178C / EUROCAE ED-12C mandates establishing, baselining, and approving the lifecycle governance plans, technical standards, and tool qualification assumptions:
 
-* **Stage Target**: SOI-1 Review (Audit of software plans and standards).
-* **Baseline Artifacts**:
-  * [`docs/planning/PSAC.md`](docs/planning/PSAC.md): Plan for Software Aspects of Certification.
-  * [`docs/planning/SDP.md`](docs/planning/SDP.md): Software Development Plan.
-  * [`docs/planning/SVP.md`](docs/planning/SVP.md): Software Verification Plan.
+* **Stage Target**: Stage of Involvement 1 (SOI-1) Review — Software Planning and Standards Approval.
+* **Stage Status**: **SIMULATION PASSED / DRY-RUN GATE CLEARED** (Internal baseline verification completed without open non-conformances).
 
----
+### Baseline Lifecycle Artifacts (v1.0 Frozen)
 
+* **System Safety & Criticality Allocation**:
+  * [`docs/planning/FHA_summary.md`](docs/planning/FHA_summary.md): Functional Hazard Assessment (ARP4761) allocating **DAL B** to prevent Hazardously Misleading Information (HMI).
+* **Regulatory Contract**:
+  * [`docs/planning/PSAC.md`](docs/planning/PSAC.md): Plan for Software Aspects of Certification establishing system architecture, compliance matrices, and DO-178C Table A-1 objectives.
+* **Core Lifecycle Management Plans**:
+  * [`docs/planning/SDP.md`](docs/planning/SDP.md): Software Development Plan (V-model, deterministic C++17 design rules, static footprint).
+  * [`docs/planning/SVP.md`](docs/planning/SVP.md): Software Verification Plan (Requirements-Based Testing via GoogleTest, static analysis linters, Decision Coverage target).
+  * [`docs/planning/SCMP.md`](docs/planning/SCMP.md): Software Configuration Management Plan (Git branching model, change control, cryptographic release tagging).
+  * [`docs/planning/SQAP.md`](docs/planning/SQAP.md): Software Quality Assurance Plan (Independent peer reviews, conformity audits, process integrity).
+* **Engineering Standards**:
+  * [`docs/standards/SRS.md`](docs/standards/SRS.md): Software Requirements Standard (Syntax guidelines, verifiability criteria, no implementation coupling).
+  * [`docs/standards/SDS.md`](docs/standards/SDS.md): Software Design Standard (Modular partitioning, memory invariants, deterministic execution bounds).
+  * [`docs/standards/SCS.md`](docs/standards/SCS.md): Software Code Standard (MISRA/CERT-aligned C++17 rules: no `malloc`/`new`, fixed-width types `float64_t`).
+* **Environment Control**:
+  * [`docs/planning/SECI.md`](docs/planning/SECI.md): Software Environment Configuration Index (Deterministic build/test toolchain versions frozen).
+
+### SOI-1 Dry-Run & Process Verification Audit
+
+A simulated compliance dry run was executed against the **DO-178C Table A-1** lifecycle planning objectives to authorize progression into software development:
+
+* [`doc:s/planning/SOI_1_checklist.md`](docs/planning/SOI_1_checklist.md): Formal compliance audit gate verifying document baselines, DAL allocation integrity, toolchain reproducibility, and transition criteria. All verification checklist points marked as satisfied (`PASS`).
+
+```mermaid
+flowchart TD
+    subgraph Safety ["System Safety (ARP4761)"]
+        FHA["FHA Summary<br/>(DAL B Justification)"]
+    end
+
+    subgraph Governance ["DO-178C Phase 1 Baseline (SOI-1)"]
+        PSAC["PSAC<br/>(Regulatory Contract)"]
+        Plans["Lifecycle Plans<br/>(SDP / SVP / SCMP / SQAP)"]
+        Standards["Engineering Standards<br/>(SRS / SDS / SCS)"]
+        SECI["Toolchain Index<br/>(SECI Frozen)"]
+    end
+
+   
+    FHA --> PSAC
+    PSAC --> Plans
+    
+ 
+    Plans --> SECI
+    
+   
+    SECI --> Standards
+    Standards --> Audit{"SOI-1 Dry-Run Audit<br/>(SOI_1_checklist.md)"}
+
+  
+    Audit -->|Gate Cleared / Status: PASS| Ingress["Authorization Granted:<br/>Ingress to Phase 2 (Requirements & Design)"]
+
+    classDef default fill:#1e1e2e,stroke:#89b4fa,stroke-width:1px,color:#cdd6f4;
+    classDef gate fill:#313244,stroke:#f9e2af,stroke-width:2px,color:#f9e2af;
+    classDef approved fill:#181825,stroke:#a6e3a1,stroke-width:2px,color:#a6e3a1;
+    class Audit gate;
+    class Ingress approved;
+```
 ## 3. Architecture Overview
 
 The software is structured into four deterministic modules:
