@@ -62,6 +62,7 @@ A simulated compliance dry run was executed against the **DO-178C Table A-1** li
 <p><em>Figure 1: DO-178C Phase 1 (SOI-1) Lifecycle Baseline & Audit Progression Pipeline.</em></p>
 
 </div>
+
 ## 3. Architecture Overview
 
 The software is structured into four deterministic modules:
