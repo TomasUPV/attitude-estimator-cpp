@@ -57,7 +57,7 @@ A simulated compliance dry run was executed against the **DO-178C Table A-1** li
 
 <div align="center">
 
-<img src="images/soi_1_workflow.png" alt="DO-178C Phase 1 Lifecycle Workflow" width="100%" />
+<img src="docs/images/soi_1_workflow.png" alt="DO-178C Phase 1 Lifecycle Workflow" width="100%" />
 
 <p><em>Figure 1: DO-178C Phase 1 (SOI-1) Lifecycle Baseline & Audit Progression Pipeline.</em></p>
 
