@@ -2,8 +2,8 @@
 
 **System Item:** Attitude & Heading Reference System (AHRS) — Attitude Estimator Software Function  
 **Governing Standard:** ARP4761 / ARP4754A / RTCA DO-178C Section 2  
-**Baseline Version:** 0.1 (Draft)  
-**Status:** In Work / Draft  
+**Baseline Version:** 1.0  
+**Status:** Released / SOI-1 Baseline  
 
 ---
 

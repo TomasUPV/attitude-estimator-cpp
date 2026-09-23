@@ -53,7 +53,7 @@ Before developing requirements or code, RTCA DO-178C / EUROCAE ED-12C mandates e
 
 A simulated compliance dry run was executed against the **DO-178C Table A-1** lifecycle planning objectives to authorize progression into software development:
 
-* [`doc:s/planning/SOI_1_checklist.md`](docs/planning/SOI_1_checklist.md): Formal compliance audit gate verifying document baselines, DAL allocation integrity, toolchain reproducibility, and transition criteria. All verification checklist points marked as satisfied (`PASS`).
+* [`docs/planning/SOI_1_checklist.md`](docs/planning/SOI_1_checklist.md): Formal compliance audit gate verifying document baselines, DAL allocation integrity, toolchain reproducibility, and transition criteria. All verification checklist points marked as satisfied (`PASS`).
 
 <div align="center">
 

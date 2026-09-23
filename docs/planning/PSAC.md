@@ -4,8 +4,8 @@
 **Software Component:** Attitude Estimator (EKF Pitch/Roll Core)  
 **Target Standard:** RTCA DO-178C / EUROCAE ED-12C  
 **Baseline Target:** DAL B (with DAL C Standby Applicability)  
-**Document Version:** 0.1 (Draft)  
-**Status:** In Work / Draft  
+**Document Version:** 1.0  
+**Status:** Released / SOI-1 Baseline  
 
 ---
 

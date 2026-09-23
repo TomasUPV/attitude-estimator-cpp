@@ -5,7 +5,7 @@
 **Governing Standard:** RTCA DO-178C / EUROCAE ED-12C Section 11.15  
 **Target Design Assurance Level:** DAL B  
 **Baseline Version:** 1.0  
-**Status:** Released / Baselined for SOI-1  
+**Status:** Released / SOI-1 Baseline  
 
 ---
 

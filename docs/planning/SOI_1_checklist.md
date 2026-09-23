@@ -10,6 +10,8 @@
 **Target Design Assurance Level (Mock):** DAL B  
 **Exercise Type:** Stage of Involvement 1 (SOI-1) Dry-Run & Process Validation  
 **Simulation Status:** SIMULATION PASSED / Dry-Run Gate Cleared  
+**Baseline Version:** 1.0  
+**Status:** Released / SOI-1 Baseline  
 **Submission Date:** 2026-09-17  
 **Simulation Date:** 2026-09-18  
 
@@ -65,7 +67,7 @@ This simulation evaluates whether:
 * **Simulated Open Problem Reports (OPRs):** 0 OPRs.
 * **Process / Lifecycle Plan Deficiencies:** 0 Critical Deficiencies.
 * **Observations & Process Recommendations:**
-  * **OBS-SOI1-01 (Version Identifier Synchronization):** Align inner document header baseline versions (`0.1 (Draft)`) with submission baseline tag `v1.0` / `v0.1.0-SOI-1` prior to SOI-2 tagging.
+  * **OBS-SOI1-01 (Version Identifier Synchronization):** Align inner document header baseline versions (`0.1 (Draft)`) with submission baseline tag `v1.0` / `v0.1.0-SOI-1` prior to SOI-2 tagging. **[CLOSED — Synchronized to v1.0 / Released / SOI-1 Baseline]**
   * **OBS-SOI1-02 (Compiler Flag Enhancements):** Consider explicitly adding `-fno-fast-math` and `-Wdouble-promotion` to CMake build configurations to prevent implicit floating-point conversions.
   * **OBS-SOI1-03 (Automated Traceability Validation):** Recommend adding a CI automated script to validate 100% bidirectional traceability in `docs/requirements/traceability_matrix.md` prior to SOI-2.
 
