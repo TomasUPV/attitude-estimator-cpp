@@ -86,6 +86,16 @@ Prior to approving a pull request modifying existing baselines:
 * The Requirements Traceability Matrix (`docs/requirements/traceability_matrix.md`) must be updated concurrently with the code change.
 * Reverification suites identified during impact analysis must be executed and confirmed passing.
 
+### 4.3 Engineering Change Order (ECO) & Baseline Continuity
+In compliance with DO-178C Section 7.2, any post-audit modification to baselined requirements, interfaces, or algorithmic constants mandates an Engineering Change Order (ECO).
+
+To prevent specification drift between what was formally audited at time T and the evolving software:
+* **Atomic Changeset Rule:** No code modification shall be merged without concurrently updating in the exact same commit:
+  1. The governing requirement (`HLR.md` or low-level design in `docs/design/`).
+  2. The Requirements Traceability Matrix (`traceability_matrix.md`).
+  3. The document Revision History referencing the explicit `ECO-XXX` identifier.
+* **Immutable Baseline Tagging:** Formal project baselines corresponding to SOI milestones are cryptographically locked using annotated Git tags (`v0.1.0-SOI-1`, `v0.2.0-SOI-2`).
+
 ---
 
 ## 5. Storage, Retrieval & Release Control
