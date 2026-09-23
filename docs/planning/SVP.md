@@ -19,6 +19,13 @@ In accordance with RTCA DO-178C Table A-3 through Table A-7, verification activi
   * **Verification Role:** Responsible for `tests/` suites, boundary test injection, linter enforcement, and coverage logs.
   * Formal peer review checklists gate transitions between branches to confirm independent verification sign-off.
 
+### 1.1 Independence Mitigation for Solo Development
+In full compliance with RTCA DO-178C Table A-5/A-6 expectations for DAL B software, verification activities require independence between the development and test authoring processes. In this single-engineer simulated environment, cognitive bias is mitigated through formal decoupling mechanisms:
+
+* **Requirements-First Adversarial Test Authoring:** Negative, robustness, and boundary test cases are authored and committed prior to functional implementation. Tests are designed with an adversarial posture specifically aimed at breaking algorithms, mathematical normalization, and time monotonicity.
+* **Decoupled Verification Agent Reviews:** Independent automated review passes are executed using isolated prompt/evaluation instances without access to implementation context, acting strictly as external V&V auditors tasked with finding edge-case oversights.
+* **Automated CI Gating:** Static analysis (`cppcheck`, `clang-tidy` with safety profile) and compiler warning gates (`-Werror`) operate as impartial verification arbiters, blocking commits with unhandled boundary conditions or suppressed checks.
+
 ---
 
 ## 2. Verification Methods
@@ -53,6 +60,10 @@ Dynamic verification exercises the compiled machine code strictly against alloca
 1. **Low-Level Tests (LLT - Unit Testing):** GoogleTest test fixtures mapping 1:1 with Low-Level Requirements in `docs/design/*.md`.
    * **Normal Range Testing:** Validating standard convergence, quaternion multiplication, and matrix propagation.
    * **Robustness & Boundary Testing:** Injecting abnormal inputs including dt <= 0, extreme angular rates, sensor saturation, and zero-norm vectors.
+   * **Adversarial Robustness Test Cases:**
+     * **Mathematical Edge Cases:** Ingestion of null vectors ($\mathbf{a} = [0, 0, 0]^T$), degenerate quaternions, and non-orthogonal state vectors.
+     * **Temporal Integrity Violations:** Ingestion of negative intervals ($dt \le 0$) and stall conditions ($dt > 0.1\text{ s}$).
+     * **Numerical Bounds:** Verification that float comparisons employ strict epsilon margins ($\epsilon = 10^{-12}$) to prevent subnormal division or NaN propagation.
 2. **High-Level Tests (HLT - Integration Testing):** Validating end-to-end filter convergence against synthetic noisy 6-DOF IMU profiles, verifying that estimated Euler pitch/roll errors remain within the 1.5° envelope.
 
 ---
