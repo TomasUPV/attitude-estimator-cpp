@@ -83,3 +83,21 @@ In accordance with DO-178C Table A-3 Objectives and `FHA_summary.md`:
 
 4. **Covariance Matrix Symmetry & Positive Semidefiniteness:**
    * Numerical truncation in floating-point operations can induce asymmetry in the error covariance matrix $P$. The filter architecture enforces $P = \frac{1}{2}(P + P^T)$ after every update step.
+
+---
+
+## 5. Architectural Review Checklist (DO-178C Table A-3 Verification)
+
+| Item # | Verification Criteria | DO-178C Reference | Verification Method | Result (Pass / Fail / In Work) | Review Findings / Evidence |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **CHK-ARC-01** | Are software architecture requirements compatible with High-Level Requirements? | Table A-3 (Obj 1) | Analysis / Trace | [ ] | |
+| **CHK-ARC-02** | Is the software architecture consistent with the Software Design Standard (`SDS.md`)? | Table A-3 (Obj 2) | Visual Inspection | [ ] | |
+| **CHK-ARC-03** | Is the architecture deterministic (no recursion, zero runtime heap allocation)? | Table A-3 (Obj 3) | Visual Inspection | [ ] | |
+| **CHK-ARC-04** | Are interfaces and data flow between modules explicitly defined and bounded? | Table A-3 (Obj 4) | Interface Review | [ ] | |
+| **CHK-ARC-05** | Are partition boundaries and safety-derived invariants enforced against faults? | Table A-3 (Obj 5) | Boundary Review | [ ] | |
+
+### Review & Sign-off Record
+* **Target Baseline:** `docs/design/architecture.md` (v1.0 Baseline)
+* **Author / Submitter:** Software Development Team | Date: 2026-09-28
+* **Independent Reviewer (Verification Role):** ____________________ | Date: ____________
+* **SQA Gatekeeper Approval:** ____________________ | Date: ____________
