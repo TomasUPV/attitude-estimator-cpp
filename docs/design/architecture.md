@@ -5,14 +5,14 @@
 **Design Standard Reference:** `docs/standards/SDS.md`  
 **Target Baseline:** DAL B  
 **Document Version:** 1.0 (SOI-2 Baseline)  
-**Status:** Released for SOI-2 Review  
+**Status:** draft/Working in progress 
 
 ---
 
 ## 1. Architectural Overview & Modular Decomposition
 
 The Attitude Estimator architecture is designed around four decoupled, single-responsibility modules operating under a strictly unidirectional control and data-flow paradigm.
-
+![Figure 1.1: Functional Architecture & Data-Control Flow Diagram](../images/architecture_flow.png)
 
        
 
@@ -34,17 +34,14 @@ In strict conformance with `docs/standards/SCS.md`, the architecture specifies s
 ```cpp
 namespace ahrs {
 
-// Fixed-width scalar type (IEEE-754 64-bit double precision)
 using Real = double;
 
-// Mathematical 3D Vector container (deterministic, stack-allocated)
 struct Vector3 {
     Real x{0.0};
     Real y{0.0};
     Real z{0.0};
 };
 
-// Hamilton Unit Quaternion container: q = [w, x, y, z]^T
 struct Quaternion {
     Real w{1.0};
     Real x{0.0};
@@ -52,25 +49,22 @@ struct Quaternion {
     Real z{0.0};
 };
 
-// Euler representation strictly for monitoring/telemetry egress
 struct EulerAngles {
-    Real roll{0.0};   // Rotation about X axis (rad)
-    Real pitch{0.0};  // Rotation about Y axis (rad)
-    Real yaw{0.0};    // Rotation about Z axis (rad)
+    Real roll{0.0};   
+    Real pitch{0.0};  
+    Real yaw{0.0};    
 };
 
-// Inertial Sensor Measurement Epoch
 struct ImuMeasurement {
-    Vector3 accel;    // Specific force in m/s^2
-    Vector3 gyro;     // Angular rates in rad/s
-    Real dt;          // Elapsed epoch duration in seconds
+    Vector3 accel;    
+    Vector3 gyro;   
+    Real dt;        
 };
 
-// Static 4x4 and 3x3 matrix abstractions using std::array
 using Matrix4x4 = std::array<Real, 16>;
 using Matrix3x3 = std::array<Real, 9>;
 
-} // namespace ahrs
+}
 ```
 ## 4. Deterministic Invariants & Safety Mitigations
 
