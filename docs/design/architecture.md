@@ -5,7 +5,7 @@
 **Design Standard Reference:** `docs/standards/SDS.md`  
 **Target Baseline:** DAL B  
 **Document Version:** 1.0 (SOI-2 Baseline)  
-**Status:** draft/Working in progress 
+**Status:** Released for SOI-2 Review 
 
 ---
 
@@ -90,14 +90,14 @@ In accordance with DO-178C Table A-3 Objectives and `FHA_summary.md`:
 
 | Item # | Verification Criteria | DO-178C Reference | Verification Method | Result (Pass / Fail / In Work) | Review Findings / Evidence |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **CHK-ARC-01** | Are software architecture requirements compatible with High-Level Requirements? | Table A-3 (Obj 1) | Analysis / Trace | [ ] | |
-| **CHK-ARC-02** | Is the software architecture consistent with the Software Design Standard (`SDS.md`)? | Table A-3 (Obj 2) | Visual Inspection | [ ] | |
-| **CHK-ARC-03** | Is the architecture deterministic (no recursion, zero runtime heap allocation)? | Table A-3 (Obj 3) | Visual Inspection | [ ] | |
-| **CHK-ARC-04** | Are interfaces and data flow between modules explicitly defined and bounded? | Table A-3 (Obj 4) | Interface Review | [ ] | |
-| **CHK-ARC-05** | Are partition boundaries and safety-derived invariants enforced against faults? | Table A-3 (Obj 5) | Boundary Review | [ ] | |
+| **CHK-ARC-01** | Are software architecture requirements compatible with High-Level Requirements? | Table A-3 (Obj 1) | Analysis / Trace | **[ ] Fail** | Finding F-ARC-01: Invariant for `HLR-SAF-003` ($\pm 20\%$ gravity window) omitted from SAD invariants and module allocations. |
+| **CHK-ARC-02** | Is the software architecture consistent with the Software Design Standard (`SDS.md`)? | Table A-3 (Obj 2) | Visual Inspection | **[ ] Fail** | Finding F-ARC-02: Uses `namespace ahrs` and `Real = double`, violating `SDS.md` §3.2 and `SCS.md` §2.1 (`attitude::float64_t`). Struct mismatch with `sensor_model.md`. |
+| **CHK-ARC-03** | Is the architecture deterministic (no recursion, zero runtime heap allocation)? | Table A-3 (Obj 3) | Visual Inspection | **[X] Pass** | Zero dynamic heap, no recursion, compile-time static containers (`std::array`), bounded stack depth verified. |
+| **CHK-ARC-04** | Are interfaces and data flow between modules explicitly defined and bounded? | Table A-3 (Obj 4) | Interface Review | **[ ] Fail** | Finding F-ARC-03: Matrix memory layout (Row-Major vs Column-Major) undefined for `Matrix4x4`/`Matrix3x3`. Inter-module method signatures omitted. |
+| **CHK-ARC-05** | Are partition boundaries and safety-derived invariants enforced against faults? | Table A-3 (Obj 5) | Boundary Review | **[ ] Fail** | Finding F-ARC-04: Lack of stale-data counter / timeout mechanism when discarding invalid samples; risks indefinite frozen attitude output (HMI). |
 
 ### Review & Sign-off Record
-* **Target Baseline:** `docs/design/architecture.md` (v1.0 Baseline)
+* **Target Baseline:** `docs/design/architecture.md` (v1.0 Baseline Draft)
 * **Author / Submitter:** Software Development Team | Date: 2026-09-28
-* **Independent Reviewer (Verification Role):** ____________________ | Date: ____________
-* **SQA Gatekeeper Approval:** ____________________ | Date: ____________
+* **Independent Reviewer (Verification Role):** Independent Verification Agent (Simulation) | Date: 2026-09-28
+* **SQA Gatekeeper Approval:** SQA Gatekeeper Audit Role (Simulation) — *Conditionally Approved (See `docs/verification/SOI_2_peer_review_report.md`)* | Date: 2026-09-28
