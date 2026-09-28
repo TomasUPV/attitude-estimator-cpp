@@ -1,13 +1,52 @@
-# High-Level Requirements — Attitude Estimator
+# High-Level Requirements (HLR) — Attitude Estimator
 
-| ID       | Requirement | Rationale / Source |
-|----------|-------------|---------------------|
-| HLR-001  | The system shall estimate the 3D orientation of a rigid body as a unit quaternion. | scope.md — Filter approach |
-| HLR-002  | The system shall accept 3-axis accelerometer and 3-axis gyroscope measurements as input, sampled at 100 Hz. | scope.md — Sensors modeled |
-| HLR-003  | The system shall propagate the orientation estimate between measurements using gyroscope angular rate integration. | scope.md — Propagation |
-| HLR-004  | The system shall correct the orientation estimate using accelerometer measurements as a gravity vector reference. | scope.md — Correction |
-| HLR-005  | The estimated quaternion shall remain normalized (unit norm) at all times. | Mathematical validity of quaternion representation |
-| HLR-006  | The system shall achieve a steady-state orientation error of less than 1.5° (roll/pitch) under static conditions. | scope.md — Success metrics |
-| HLR-007  | The system shall converge from a 30° initial orientation error to within the steady-state error bound in under 3 seconds. | scope.md — Success metrics |
-| HLR-008  | The system shall not diverge (unbounded error growth) over a 10-minute continuous operation profile. | scope.md — Success metrics |
-| HLR-009  | The system shall be verifiable against synthetically generated ground-truth trajectories with known orientation at each timestep. | scope.md — Test data |
+**System Item:** Attitude & Heading Reference System (AHRS) — Attitude Estimator Software Function  
+**Target Process:** RTCA DO-178C / EUROCAE ED-12C Section 5.1 & Table A-2  
+**Governing Standard:** `docs/standards/SRS.md`  
+**Target Baseline:** DAL B (with DAL C Standby Applicability)  
+**Document Version:** 1.0 (SOI-2 Baseline)  
+**Status:** Draft/ Working in progress
+
+---
+
+## 1. Functional Requirements (HLR-FNC)
+
+| Requirement ID | Statement | Rationale / Source | Verification Method |
+| :--- | :--- | :--- | :--- |
+| **HLR-FNC-001** | The system shall estimate the 3D spatial orientation of the rigid body represented as a 4-element Hamilton unit quaternion ($q = [w, x, y, z]^T$, body-to-world frame). | Scope § Filter approach (Eliminates gimbal lock) | Test (HLT) |
+| **HLR-FNC-002** | The system shall propagate the attitude state estimate between discrete measurement epochs via numerical integration of gyroscope tri-axial angular rates. | Scope § Propagation; DO-178C Table A-2 (Obj 1) | Test (HLT) |
+| **HLR-FNC-003** | The system shall correct the propagated attitude state estimate utilizing tri-axial accelerometer measurements as a local gravity vector reference ($[0, 0, -1g]^T$). | Scope § Correction; DO-178C Table A-2 (Obj 1) | Test (HLT) |
+| **HLR-FNC-004** | The system shall provide an auxiliary transformation converting the internal attitude quaternion into Euler angles (pitch, roll, yaw) in radians strictly for telemetry/display egress. | Scope § Filter approach; `docs/standards/SDS.md` | Test (HLT) / Inspection |
+
+---
+
+## 2. Performance & Accuracy Requirements (HLR-PRF)
+
+| Requirement ID | Statement | Rationale / Source | Verification Method |
+| :--- | :--- | :--- | :--- |
+| **HLR-PRF-001** | Under nominal static conditions, the system shall maintain a steady-state pitch and roll orientation error of less than $1.5^\circ$ ($0.02618\text{ rad}$) RMS relative to ground truth. | Scope § Success metrics (MEMS noise bound) | Test (HLT) |
+| **HLR-PRF-002** | The system shall converge from an initial angular orientation displacement of $30.0^\circ$ to within the steady-state error bound ($\le 1.5^\circ$) in less than $3.0\text{ s}$. | Scope § Success metrics | Test (HLT) |
+| **HLR-PRF-003** | The system shall maintain bounded orientation error without divergence across a continuous $10.0\text{-minute}$ ($600.0\text{ s}$) dynamic simulated flight profile. | Scope § Success metrics; Numerical stability | Test (HLT) |
+| **HLR-PRF-004** | The system shall be verifiable against synthetically generated ground-truth trajectories pairing deterministic 6-DOF IMU samples with true orientation at each timestep. | Scope § Test data; DO-178C Table A-2 (Obj 2) | Test (HLT) |
+
+---
+
+## 3. Interface & Timing Requirements (HLR-IFC)
+
+| Requirement ID | Statement | Rationale / Source | Verification Method |
+| :--- | :--- | :--- | :--- |
+| **HLR-IFC-001** | The system shall ingest synchronized tri-axial specific force ($a_x, a_y, a_z$) in $\text{m/s}^2$ and tri-axial angular rates ($\omega_x, \omega_y, \omega_z$) in $\text{rad/s}$ with a nominal epoch interval of $\Delta t = 0.01\text{ s}$ ($100\text{ Hz}$). | Scope § Sensors modeled; System Allocation | Test (HLT) |
+| **HLR-IFC-002** | The system shall provide non-blocking query interfaces returning the current estimated quaternion and Euler angles without modifying internal filter state. | `docs/standards/SDS.md` § Loose Coupling | Review / Test (HLT) |
+
+---
+
+## 4. Safety & Integrity Requirements (HLR-SAF) [Derived Requirements]
+
+*Note: Requirements in this section are derived directly from the system safety assessment (`FHA_summary.md`) to mitigate Hazardously Misleading Information (FHA-AHRS-001).*
+
+| Requirement ID | Statement | Parent Safety Allocation | Verification Method |
+| :--- | :--- | :--- | :--- |
+| **HLR-SAF-001** | The system shall reject and flag as invalid any sensor sample whose elapsed timestep satisfies $\Delta t \le 0.0\text{ s}$ or $\Delta t > 0.10\text{ s}$ to prevent kinematic integrator explosion. | `SR-SAF-001` (FHA § 5) | Test (HLT / Robustness) |
+| **HLR-SAF-002** | The system shall guarantee that the Euclidean norm of the estimated attitude quaternion remains strictly bounded ($\vert{}\Vert{}q\Vert{} - 1.0\vert{} \le 1.0\times 10^{-6}$) after every prediction and update cycle. | `SR-SAF-002` (FHA § 5) | Test (HLT / Robustness) |
+| **HLR-SAF-003** | The system shall reject accelerometer correction updates when the measured acceleration norm deviates from nominal gravity by more than $\pm 20\%$ ($\Vert{}a\Vert{} < 7.848\text{ m/s}^2$ or $\Vert{}a\Vert{} > 11.772\text{ m/s}^2$). | FHA-AHRS-001 (Prevents corrupted gravity vectors under dynamic linear acceleration) | Test (HLT / Robustness) |
+| **HLR-SAF-004** | The system shall execute without dynamic runtime heap allocation (`malloc`, `free`, `new`, `delete`), utilizing statically bounded memory allocations. | `SR-SAF-003` (FHA § 5); `docs/standards/SCS.md` | Static Analysis / Inspection |
