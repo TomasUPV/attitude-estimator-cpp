@@ -50,3 +50,25 @@
 | **HLR-SAF-002** | The system shall guarantee that the Euclidean norm of the estimated attitude quaternion remains strictly bounded ($\vert{}\Vert{}q\Vert{} - 1.0\vert{} \le 1.0\times 10^{-6}$) after every prediction and update cycle. | `SR-SAF-002` (FHA § 5) | Test (HLT / Robustness) |
 | **HLR-SAF-003** | The system shall reject accelerometer correction updates when the measured acceleration norm deviates from nominal gravity by more than $\pm 20\%$ ($\Vert{}a\Vert{} < 7.848\text{ m/s}^2$ or $\Vert{}a\Vert{} > 11.772\text{ m/s}^2$). | FHA-AHRS-001 (Prevents corrupted gravity vectors under dynamic linear acceleration) | Test (HLT / Robustness) |
 | **HLR-SAF-004** | The system shall execute without dynamic runtime heap allocation (`malloc`, `free`, `new`, `delete`), utilizing statically bounded memory allocations. | `SR-SAF-003` (FHA § 5); `docs/standards/SCS.md` | Static Analysis / Inspection |
+
+---
+
+## 5. Requirements Review Checklist (DO-178C Table A-2 Verification)
+
+Prior to baselining these High-Level Requirements, the independent peer reviewer and SQA gatekeeper evaluate compliance against `docs/standards/SRS.md` and DO-178C Table A-2 objectives:
+
+| Item # | Verification Check Item | DO-178C Criteria Reference | Verification Method | Result (Pass / Fail / In Work) | Review Findings / Evidence |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **CHK-SRS-01** | **Mandatory Modality:** Does every requirement state normative intent using `shall` syntax, excluding ambiguous verbs (`should`, `may`, `will`)? | Section 5.1.2.a | Visual Inspection | [ ] | |
+| **CHK-SRS-02** | **Absence of Ambiguity:** Is the statement free of qualitative/untestable terms (e.g., *fast*, *robust*, *optimized*, *TBD*)? | Section 5.1.2.b | Lexical Search / Peer Review | [ ] | |
+| **CHK-SRS-03** | **Verifiability & Quantifiable Tolerances:** Does the requirement establish numerical thresholds, timing bounds, SI units, and deterministic limits? | Section 6.2.2.a | Review vs Scope Targets | [ ] | |
+| **CHK-SRS-04** | **Input/Output Domain Completeness:** Are nominal operating intervals, boundary/edge conditions, and invalid inputs explicitly addressed? | Section 5.1.2.b | Boundary Analysis Review | [ ] | |
+| **CHK-SRS-05** | **Implementation Independence:** Does the HLR define functional intent without dictating programming language constructs or local variables? | Section 5.1.2.a | Architecture Decoupling Check | [ ] | |
+| **CHK-SRS-06** | **Traceability Integrity:** Is the requirement assigned an immutable identifier and registered bidirectionally in the RTM? | Section 5.5 / Table A-2 | Traceability Audit | [ ] | |
+| **CHK-SRS-07** | **Derived Safety Identification:** If the requirement is derived (e.g., `HLR-SAF-*`), has it been formally flagged and reported to system safety? | Section 5.2.2 / FHA | Safety Assessment Check | [ ] | |
+
+### Review & Sign-off Record
+* **Target Baseline:** `docs/requirements/HLR.md` (v1.0 Baseline)
+* **Author / Submitter:** Software Engineering Team | Date: 2026-09-28
+* **Independent Reviewer (Verification Role):** ____________________ | Date: ____________
+* **SQA Gatekeeper Approval:** ____________________ | Date: ____________
