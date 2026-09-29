@@ -108,7 +108,7 @@ The software architecture operates under a strictly **unidirectional control hie
 </div>
 
 ### Modular Responsibilities
-* **`AttitudeEstimator` (Public Facade)**: Coordinates sample ingestion, enforces temporal monotonicity ($0 < \Delta t \le 0.10\text{ s}$), tracks consecutive invalid samples ($N_{drop} > 10 \to \text{STATUS\_STALE\_DATA}$), and exposes orientation queries without leaking internal mutable state.
+* **`AttitudeEstimator` (Public Facade)**: Coordinates sample ingestion, enforces temporal monotonicity ($0 < \Delta t \le 0.10\text{ s}$), tracks consecutive invalid samples ($N_{drop} > 10 \to$ `STATUS_STALE_DATA`), and exposes orientation queries without leaking internal mutable state.
 * **`EKF_Core` (State Estimation Engine)**: Discrete quaternion Kalman filter algorithm. Propagates state and covariance matrices via numerical Jacobian evaluations, applies gravity innovation with accelerometer plausibility gating ($7.848 \le \Vert{}a\Vert{} \le 11.772\text{ m/s}^2$), and enforces covariance symmetry ($P = \frac{1}{2}(P + P^T)$). Matrices adhere to contiguous Row-Major storage ($k = i \cdot N + j$).
 * **`QuaternionMath` (Pure Algebraic Kernel)**: Stateless, pure functions ($O(1)$ stack, zero side-effects). Performs Hamilton products, vector rotations, defensive normalizations ($\epsilon = 1.0\times 10^{-12}$), and Tait-Bryan $Z-Y-X$ Euler transformations with deterministic singularity clamping.
 * **`SensorModel` (Data Contracts & Harness)**: Defines synchronized IMU ingress data structures (`ImuSample`, `AccelReading`, `GyroReading`) and generates 6-DOF synthetic trajectories with additive Gaussian noise paired with ground-truth for error tracking.
