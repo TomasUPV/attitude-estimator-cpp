@@ -2,8 +2,8 @@
 
 **System Item:** Attitude & Heading Reference System (AHRS) — Attitude Estimator Function  
 **Governing Standard:** RTCA DO-178C / EUROCAE ED-12C Section 5.5, Table A-2 (Obj 6) & Table A-4 (Obj 1)  
-**Document Version:** 1.1 (SOI-2 Baseline Candidate)  
-**Status:** Synchronized with HLR v1.1  
+**Document Version:** 1.1 (SOI-2 Approved)  
+**Status:** SOI-2 Approved  
 
 ---
 

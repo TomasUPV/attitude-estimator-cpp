@@ -4,8 +4,8 @@
 **Target Process:** RTCA DO-178C / EUROCAE ED-12C Section 5.1 & Table A-2  
 **Governing Standard:** `docs/standards/SRS.md`  
 **Target Baseline:** DAL B (with DAL C Standby Applicability)  
-**Document Version:** 1.1 (SOI-2 Baseline Draft)  
-**Status:** Submitted for SOI-2 Review  
+**Document Version:** 1.1 (SOI-2 Approved)  
+**Status:** SOI-2 Approved  
 
 ---
 
@@ -57,16 +57,16 @@
 
 | Item # | Verification Check Item | DO-178C Criteria Reference | Verification Method | Result (Pass / Fail / In Work) | Review Findings / Evidence |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **CHK-SRS-01** | **Mandatory Modality:** Does every requirement state normative intent using `shall` syntax, excluding ambiguous verbs (`should`, `may`, `will`)? | Section 5.1.2.a | Visual Inspection | [ ] | |
-| **CHK-SRS-02** | **Absence of Ambiguity:** Is the statement free of qualitative/untestable terms (e.g., *fast*, *robust*, *optimized*, *TBD*)? | Section 5.1.2.b | Lexical Search / Peer Review | [ ] | |
-| **CHK-SRS-03** | **Verifiability & Quantifiable Tolerances:** Does the requirement establish numerical thresholds, timing bounds, SI units, and deterministic limits? | Section 6.2.2.a | Review vs Scope Targets | [ ] | |
-| **CHK-SRS-04** | **Input/Output Domain Completeness:** Are nominal operating intervals, boundary/edge conditions, and invalid inputs explicitly addressed? | Section 5.1.2.b | Boundary Analysis Review | [ ] | |
-| **CHK-SRS-05** | **Implementation Independence:** Does the HLR define functional intent without dictating programming language constructs or local variables? | Section 5.1.2.a | Architecture Decoupling Check | [ ] | |
-| **CHK-SRS-06** | **Traceability Integrity:** Is the requirement assigned an immutable identifier and registered bidirectionally in the RTM? | Section 5.5 / Table A-2 | Traceability Audit | [ ] | |
-| **CHK-SRS-07** | **Derived Safety Identification:** If the requirement is derived (e.g., `HLR-SAF-*`), has it been formally flagged and reported to system safety? | Section 5.2.2 / FHA | Safety Assessment Check | [ ] | |
+| **CHK-SRS-01** | **Mandatory Modality:** Does every requirement state normative intent using `shall` syntax, excluding ambiguous verbs (`should`, `may`, `will`)? | Section 5.1.2.a | Visual Inspection | **[X] Pass** | 100% compliance across all 14 HLRs; no non-normative auxiliary verbs detected. |
+| **CHK-SRS-02** | **Absence of Ambiguity:** Is the statement free of qualitative/untestable terms (e.g., *fast*, *robust*, *optimized*, *TBD*)? | Section 5.1.2.b | Lexical Search / Peer Review | **[X] Pass** | Finding F-HLR-01 & F-HLR-02 closed: `HLR-PRF-003` numerical dynamic ceilings specified; `HLR-FNC-004` Tait-Bryan Z-Y-X convention and singularity clamping defined. |
+| **CHK-SRS-03** | **Verifiability & Quantifiable Tolerances:** Does the requirement establish numerical thresholds, timing bounds, SI units, and deterministic limits? | Section 6.2.2.a | Review vs Scope Targets | **[X] Pass** | Finding F-HLR-01 & F-HLR-02 closed: `HLR-PRF-001` specifies observation window >= 10.0 s; `HLR-PRF-003` specifies dynamic error < 3.0° RMS and < 5.0° peak. |
+| **CHK-SRS-04** | **Input/Output Domain Completeness:** Are nominal operating intervals, boundary/edge conditions, and invalid inputs explicitly addressed? | Section 5.1.2.b | Boundary Analysis Review | **[X] Pass** | Finding F-HLR-03 & F-HLR-04 closed: `HLR-IFC-001` specifies bounds (||a|| <= 160.0 m/s², |ω| <= 35.0 rad/s) & NaN/Inf sanitization; `HLR-SAF-001` specifies fallback state & status flag. |
+| **CHK-SRS-05** | **Implementation Independence:** Does the HLR define functional intent without dictating programming language constructs or local variables? | Section 5.1.2.a | Architecture Decoupling Check | **[X] Pass** | Functional intent clearly separated from language implementation; memory allocation constraints in `HLR-SAF-004` reflect valid safety allocations. |
+| **CHK-SRS-06** | **Traceability Integrity:** Is the requirement assigned an immutable identifier and registered bidirectionally in the RTM? | Section 5.5 / Table A-2 | Traceability Audit | **[X] Pass** | Finding F-HLR-05 closed: 100% bidirectional traceability between canonical HLR IDs (`HLR-FNC-*`, `HLR-PRF-*`, `HLR-IFC-*`, `HLR-SAF-*`) and LLRs in `traceability_matrix.md`. |
+| **CHK-SRS-07** | **Derived Safety Identification:** If the requirement is derived (e.g., `HLR-SAF-*`), has it been formally flagged and reported to system safety? | Section 5.2.2 / FHA | Safety Assessment Check | **[X] Pass** | All derived safety requirements (`HLR-SAF-001..004`) are formally flagged and traced to `FHA_summary.md` (`SR-SAF-001..003`). |
 
 ### Review & Sign-off Record
-* **Target Baseline:** `docs/requirements/HLR.md` (v1.0 Baseline Draft)
-* **Author / Submitter:** Software Engineering Team | Date: 2026-09-28
-* **Independent Reviewer (Verification Role):** ____________________ | Date: ____________
-* **SQA Gatekeeper Approval:** ____________________ | Date: ____________
+* **Target Baseline:** `docs/requirements/HLR.md` (v1.1 Approved Candidate)
+* **Author / Submitter:** Software Engineering Team | Date: 2026-09-29
+* **Independent Reviewer (Verification Role):** Independent Airborne Software Verification Engineer (Sim) | Date: 2026-09-29
+* **SQA Gatekeeper Approval:** SQA Gatekeeper Audit Role (Sim) — **Approved (Lock v0.2.0-SOI-2)** | Date: 2026-09-29
