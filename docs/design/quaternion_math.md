@@ -1,6 +1,6 @@
 # Design — QuaternionMath
 
-Traces to: HLR-001, HLR-005
+Traces to: HLR-FNC-001, HLR-FNC-002, HLR-FNC-004, HLR-SAF-002, HLR-SAF-004
 
 Pure mathematical operations on quaternions. Stateless — no internal
 state, no side effects. Fully unit-testable in isolation.

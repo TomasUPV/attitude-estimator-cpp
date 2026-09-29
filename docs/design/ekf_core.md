@@ -1,5 +1,5 @@
 # Design — EKF_Core
-Traces to: HLR-003, HLR-004, HLR-005, HLR-006, HLR-007, HLR-008
+Traces to: HLR-FNC-002, HLR-FNC-003, HLR-PRF-001, HLR-PRF-002, HLR-PRF-003, HLR-SAF-003, HLR-SAF-004
 
 State estimation core implementing an Extended Kalman Filter (EKF) for attitude estimation. Maintains system state, covariance, and computes the prediction-update cycle using quaternion kinematics and gravity vector observations.
 

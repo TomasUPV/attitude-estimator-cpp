@@ -1,6 +1,6 @@
 # Design — SensorModel
 
-Traces to: HLR-002, HLR-009
+Traces to: HLR-PRF-004, HLR-IFC-001
 
 Data structures for IMU readings, plus (for the synthetic data
 generator) a noise model that mimics a real MEMS accelerometer and

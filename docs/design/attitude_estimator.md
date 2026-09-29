@@ -1,5 +1,5 @@
 # Design — AttitudeEstimator
-Traces to: HLR-001, HLR-002, HLR-003, HLR-004, HLR-007, HLR-008
+Traces to: HLR-FNC-001, HLR-FNC-004, HLR-PRF-001, HLR-PRF-002, HLR-IFC-001, HLR-IFC-002, HLR-SAF-001, HLR-SAF-002, HLR-SAF-003, HLR-SAF-004
 
 High-level wrapper module acting as the public-facing interface (Facade pattern) for external consumers. Encapsulates sensor input validation, time-delta tracking, state orchestration, and conversion to human-readable angles.
 
