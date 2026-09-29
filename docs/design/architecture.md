@@ -13,7 +13,7 @@
 
 The Attitude Estimator architecture is designed around four decoupled, single-responsibility modules operating under a strictly unidirectional control and data-flow paradigm.
 
-![Figure 1.1: Functional Architecture & Data-Control Flow Diagram](../images/architecture.sgv)
+![Figure 1.1: Functional Architecture](docs/images/architecture.svg)
 
 ## 2. Core Modules & Responsibilities
 
