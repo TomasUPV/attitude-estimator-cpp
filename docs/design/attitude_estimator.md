@@ -17,8 +17,7 @@ High-level wrapper module acting as the public-facing interface (Facade pattern)
 | LLR-AE-004 | `processSample()` shall invoke `EKF_Core::update()` using the accelerometer reading from `imu_sample`. |
 | LLR-AE-005 | `getOrientationQuaternion()` shall return the current estimated unit quaternion. |
 | LLR-AE-006 | `getEulerAngles()` shall compute and return pitch and roll in radians via `QuaternionMath::toEulerAngles()`. |
-| LLR-AE-007 | `processSample()` shall discard samples with non-positive or excessive time deltas ($dt \le 0$ or $dt > 0.1\text{ s}$) and report an input error flag. |
-
+| LLR-AE-007 | `processSample()` shall discard samples with non-positive or excessive time deltas ($dt \le 0$ or $dt > 0.1\text{ s}$), increment an invalid sample counter $N_{drop}$, and set `STATUS_STALE_DATA` when $N_{drop} > 10$. |
 ## Notes
 - **Decoupling**: Consumers do not interact with matrix operations, covariance propagation, or raw Jacobians; everything passes through `processSample()`.
 - **Fault Detection (LLR-AE-007)**: Guards against integration explosions if the sensor driver stalls or drops packets.
