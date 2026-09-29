@@ -21,7 +21,7 @@ defines the "shape" of sensor data flowing into it.
 | LLR-SM-001 | `AccelReading` shall store 3-axis acceleration in m/s² and a timestamp in seconds. |
 | LLR-SM-002 | `GyroReading` shall store 3-axis angular rate in rad/s and a timestamp in seconds. |
 | LLR-SM-003 | `ImuSample` shall combine one `AccelReading` and one `GyroReading` sharing the same timestamp. |
-| LLR-SM-004 | The synthetic data generator shall produce `ImuSample` sequences from a known ground-truth orientation trajectory, at a configurable sample rate (default 100 Hz, per HLR-002). |
+| LLR-SM-004 | The synthetic data generator shall produce `ImuSample` sequences from a known ground-truth orientation trajectory, at a configurable sample rate (default 100 Hz, per HLR-IFC-001). |
 | LLR-SM-005 | The synthetic data generator shall inject additive Gaussian noise on accelerometer and gyroscope readings, with configurable standard deviation per axis. |
 | LLR-SM-006 | The synthetic data generator shall output the ground-truth orientation (quaternion) alongside each noisy `ImuSample`, for error computation against the filter's estimate. |
 
@@ -37,6 +37,6 @@ defines the "shape" of sensor data flowing into it.
   white noise is the standard first-order approximation and is
   sufficient to validate the filter's core behavior. This is a
   deliberate, documented simplification — not an oversight.
-- **LLR-SM-006 is what makes HLR-009 (verifiability) possible**:
+- **LLR-SM-006 is what makes HLR-PRF-004 (verifiability) possible**:
   without ground truth attached to each sample, you can't measure
   error, only "the filter runs without crashing."
