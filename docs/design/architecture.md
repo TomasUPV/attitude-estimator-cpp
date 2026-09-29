@@ -63,6 +63,13 @@ struct ImuMeasurement {
 using Matrix4x4 = std::array<float64_t, 16>;
 using Matrix3x3 = std::array<float64_t, 9>;
 
+enum class FilterStatus : std::uint8_t {
+    STATUS_OK = 0U,
+    STATUS_INVALID_TIMESTEP = 1U,
+    STATUS_DEGENERATE_ACCEL = 2U,
+    STATUS_STALE_DATA = 3U
+};
+
 }
 ```
 ## 4. Deterministic Invariants & Safety Mitigations
@@ -85,6 +92,9 @@ In accordance with DO-178C Table A-3 Objectives and `FHA_summary.md`:
 
 5. **Covariance Matrix Symmetry & Positive Semidefiniteness:**
    * Numerical truncation in floating-point operations can induce asymmetry in the error covariance matrix $P$. The filter architecture enforces $P = \frac{1}{2}(P + P^T)$ after every update step.
+
+6. **Stale Data Fault Containment (`FHA-AHRS-001` Mitigation):**
+   * The estimator maintains an invalid-sample counter $N_{drop}$. If consecutive dropped samples satisfy $N_{drop} > 10$ ($> 100\text{ ms}$ at $100\text{ Hz}$), the filter shall assert `FilterStatus::STATUS_STALE_DATA` to prevent silent delivery of frozen telemetry.
 
 ---
 
