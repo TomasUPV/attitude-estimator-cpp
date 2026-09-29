@@ -4,8 +4,8 @@
 **Governing Standard:** RTCA DO-178C / EUROCAE ED-12C Section 5.2 & Table A-3  
 **Design Standard Reference:** `docs/standards/SDS.md`  
 **Target Baseline:** DAL B (with DAL C Standby Applicability)  
-**Document Version:** 1.1 (SOI-2 Review Candidate)  
-**Status:** Submitted for SOI-2 Re-Audit  
+**Document Version:** 1.1 (SOI-2 Approved)  
+**Status:** SOI-2 Approved  
 
 ---
 
@@ -13,7 +13,7 @@
 
 The Attitude Estimator architecture is designed around four decoupled, single-responsibility modules operating under a strictly unidirectional control and data-flow paradigm.
 
-![Figure 1.1: Functional Architecture & Data-Control Flow Diagram](../images/architecture_flow.png)
+![Figure 1.1: Functional Architecture & Data-Control Flow Diagram](../images/architecture.sgv)
 
 ## 2. Core Modules & Responsibilities
 
@@ -54,14 +54,30 @@ struct EulerAngles {
     float64_t yaw{0.0};    
 };
 
-struct ImuMeasurement {
-    Vector3 accel;         
-    Vector3 gyro;          
-    float64_t dt{0.01}; 
+// Sensor reading data structures (harmonized with docs/design/sensor_model.md)
+struct AccelReading {
+    Vector3 accel;
+    float64_t timestamp{0.0};
 };
 
-using Matrix4x4 = std::array<float64_t, 16>;
-using Matrix3x3 = std::array<float64_t, 9>;
+struct GyroReading {
+    Vector3 gyro;
+    float64_t timestamp{0.0};
+};
+
+struct ImuSample {
+    AccelReading accel;
+    GyroReading gyro;
+    float64_t dt{0.01};
+};
+
+// Backward-compatibility alias for ingress measurements
+using ImuMeasurement = ImuSample;
+
+// Matrix storage convention: Row-Major layout order.
+// Element (i, j) of an M x N matrix maps to 1D flat array index: k = i * N + j.
+using Matrix4x4 = std::array<float64_t, 16>; // 4x4 Row-Major matrix
+using Matrix3x3 = std::array<float64_t, 9>;  // 3x3 Row-Major matrix
 
 enum class FilterStatus : std::uint8_t {
     STATUS_OK = 0U,
@@ -102,14 +118,14 @@ In accordance with DO-178C Table A-3 Objectives and `FHA_summary.md`:
 
 | Item # | Verification Criteria | DO-178C Reference | Verification Method | Result (Pass / Fail / In Work) | Review Findings / Evidence |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **CHK-ARC-01** | Are software architecture requirements compatible with High-Level Requirements? | Table A-3 (Obj 1) | Analysis / Trace | [ ] | |
-| **CHK-ARC-02** | Is the software architecture consistent with the Software Design Standard (`SDS.md`)? | Table A-3 (Obj 2) | Visual Inspection | [ ] | |
-| **CHK-ARC-03** | Is the architecture deterministic (no recursion, zero runtime heap allocation)? | Table A-3 (Obj 3) | Visual Inspection | [ ] | |
-| **CHK-ARC-04** | Are interfaces and data flow between modules explicitly defined and bounded? | Table A-3 (Obj 4) | Interface Review | [ ] | |
-| **CHK-ARC-05** | Are partition boundaries and safety-derived invariants enforced against faults? | Table A-3 (Obj 5) | Boundary Review | [ ] | |
+| **CHK-ARC-01** | Are software architecture requirements compatible with High-Level Requirements? | Table A-3 (Obj 1) | Analysis / Trace | **[X] Pass** | Finding F-ARC-01 closed: Invariant 4 allocates HLR-SAF-003 ([7.848, 11.772] m/s² plausibility window). |
+| **CHK-ARC-02** | Is the software architecture consistent with the Software Design Standard (`SDS.md`)? | Table A-3 (Obj 2) | Visual Inspection | **[X] Pass** | Finding F-ARC-02 closed: Uses `namespace attitude`, `float64_t`, and harmonized data contracts (`ImuSample`, `AccelReading`, `GyroReading`). |
+| **CHK-ARC-03** | Is the architecture deterministic (no recursion, zero runtime heap allocation)? | Table A-3 (Obj 3) | Visual Inspection | **[X] Pass** | Invariant 1 verified: Zero runtime heap, no recursion, compile-time static `std::array`, bounded stack depth. |
+| **CHK-ARC-04** | Are interfaces and data flow between modules explicitly defined and bounded? | Table A-3 (Obj 4) | Interface Review | **[X] Pass** | Finding F-ARC-03 closed: Explicit Row-Major layout specification with indexing rule (k = i * N + j) for `Matrix4x4` and `Matrix3x3`. |
+| **CHK-ARC-05** | Are partition boundaries and safety-derived invariants enforced against faults? | Table A-3 (Obj 5) | Boundary Review | **[X] Pass** | Finding F-ARC-04 closed: Invariant 6 enforces stale-data mitigation (N_drop > 10 asserts STATUS_STALE_DATA) against Hazard FHA-AHRS-001 (HMI). |
 
 ### Review & Sign-off Record
-* **Target Baseline:** `docs/design/architecture.md` (v1.1 Candidate)
-* **Author / Submitter:** Software Development Team | Date: 2026-09-28
-* **Independent Reviewer (Verification Role):** ____________________ | Date: ____________
-* **SQA Gatekeeper Approval:** ____________________ | Date: ____________
+* **Target Baseline:** `docs/design/architecture.md` (v1.1 SOI-2 Approved)
+* **Author / Submitter:** Software Development Team | Date: 2026-09-29
+* **Independent Reviewer (Verification Role):** AI Verification Simulation Auditor | Date: 2026-09-29
+* **SQA Gatekeeper Approval:** AI SQA Simulation Auditor — **Approved (Lock v0.2.0-SOI-2)** | Date: 2026-09-29
